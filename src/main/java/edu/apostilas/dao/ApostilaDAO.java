@@ -60,7 +60,7 @@ public class ApostilaDAO {
 		try {
 			Apostila apostilaAntiga = (Apostila)manager.find(Apostila.class, apostila.getIdApostila());
 			if(apostilaAntiga != null) {
-				apostilaAntiga.setQuantidade(apostila.getQuantidade());
+				apostilaAntiga.setQuantidade(apostilaAntiga.getQuantidade() + apostila.getQuantidade());
 				return true;
 			} 
 		} catch (Exception e) {

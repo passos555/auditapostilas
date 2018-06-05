@@ -47,9 +47,11 @@ public class ApostilaController {
 		ModelAndView model = new ModelAndView("apostilas/consulta");
 		List<Apostila> apostilas = apostilaDao.listar();
 		model.addObject("apostilas", apostilas);
+		model.addObject("tipos", TipoApostila.values());
 		return model;
 	}
 	
+	/*
 	@RequestMapping("/apostilas/detalhe/{id}")
 	public ModelAndView detalhe(@PathVariable("id") Integer id) {
 		ModelAndView model = new ModelAndView("apostilas/detalhe");
@@ -57,7 +59,7 @@ public class ApostilaController {
 		model.addObject("apostila", apostila);
 		model.addObject("tipos", TipoApostila.values());
 		return model;
-	}
+	}*/
 	
 	@RequestMapping(value = "/apostilas/detalhe", method = RequestMethod.POST)
 	public ModelAndView alterar(Apostila apostila, RedirectAttributes redirectAttributes) {
@@ -71,13 +73,14 @@ public class ApostilaController {
 		return model;
 	}
 	
+	/*
 	@RequestMapping("/apostilas/adiciona/{id}")
 	public ModelAndView quantidadeForm(@PathVariable("id") Integer id) {
 		ModelAndView model = new ModelAndView("apostilas/adiciona");
 		Apostila apostila = apostilaDao.findApostila(id);
 		model.addObject("apostila", apostila);
 		return model;
-	}
+	}*/
 	
 	@RequestMapping(value = "/apostilas/adiciona", method = RequestMethod.POST)
 	public ModelAndView adicionar(Apostila apostila, RedirectAttributes redirectAttributes) {

@@ -107,9 +107,9 @@ desired effect
                 <thead>
                 <tr>
                   <th>Descrição</th>
+                  <th>Tipo</th>
                   <th>Páginas</th>
                   <th>Quantidade</th>
-                  <th>Tipo</th>
                   <th width="5%">Adicionar</th>
                   <th width="5%">Alterar</th>
                 </tr>
@@ -118,11 +118,22 @@ desired effect
                  <c:forEach items="${apostilas }" var="apostila">
 	                <tr>
 	                  <td>${apostila.descricao }</td>
+	                  <td>${apostila.tipo }</td>
 	                  <td>${apostila.paginas }</td>
 	                  <td>${apostila.quantidade }</td>
-	                  <td>${apostila.tipo }</td>
-	                  <td align="center"><a href="${s:mvcUrl('AC#quantidadeForm').arg(0,apostila.idApostila).build() }"><i class="fa fa-plus-circle"></i></a></td>
-	                  <td align="center"><a href="${s:mvcUrl('AC#detalhe').arg(0,apostila.idApostila).build() }"><i class="fa fa-wrench"></i></a></td>
+	                  <td align="center">
+	                  	<a class="open-AddQtd" href="#modal-adiciona" data-apostila-id="${apostila.idApostila }"
+	                  	 data-apostila-tipo="${apostila.tipo }" data-apostila-descricao="${apostila.descricao }" data-toggle="modal"
+	                  	 data-target=".modal1">
+	                  	 <i class="fa fa-plus-circle"></i></a>
+	                  </td>
+	                  <td align="center">
+	                  	<a class="open-Alt" href="#modal-altera" data-apostila-id="${apostila.idApostila }"
+	                  	 data-apostila-tipo="${apostila.tipo }" data-apostila-descricao="${apostila.descricao }" 
+	                  	 data-apostila-paginas="${apostila.paginas }" data-toggle="modal"
+	                  	 data-target=".modal2"><i class="fa fa-wrench"></i></a>
+	                  </td>
+	                  
 	                </tr>
                  </c:forEach>
                 </tbody>
@@ -134,6 +145,113 @@ desired effect
     </section>
   </div>
   
+ <!-- MODAL ADIÇÃO DE QUANTIDADE -->
+  <div class="modal fade modal1" id="modal-adciona">
+     <div class="modal-dialog">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span></button>
+           <h4 class="modal-title">Adicionar Apostila</h4>
+         </div>
+         <div class="modal-body">
+          <form class="form-horizontal" action="${s:mvcUrl('AC#adicionar').build() }" method="POST">
+              <div class="box-body" id="mb1">
+              	<input type="hidden" value="${apostila.idApostila }" name="idApostila" id="idApostila">
+                <div class="form-group">
+                  <label for="nome" class="col-sm-4 control-label">Descrição</label>
+                  <div class="col-sm-5">
+                    <input type="text" value="${apostila.descricao }" class="form-control" name="descricao" id="descricao" disabled>
+                  </div>
+                </div>
+               
+                <div class="form-group">
+                <label class="col-sm-4 control-label">Tipo Apostila</label>
+                <div class="col-sm-5">
+                	<input type="text" value="${apostila.tipo }" class="form-control" name="tipo" id="tipo" disabled>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                  <label for="nome" class="col-sm-4 control-label">Quantidade*</label>
+                  <div class="col-sm-5">
+                    <input type="text" onkeypress="validate(event)" class="form-control" name="quantidade" id="quantidade" required>
+                  </div>
+                </div>
+              
+              </div>
+              <div class="modal-footer">
+           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
+           <button type="submit" class="btn btn-primary btn-md">Salvar</button>
+         </div> 
+         </form>           
+       </div>
+       <!-- /.modal-content -->
+     </div>
+     <!-- /.modal-dialog -->
+   </div>
+   <!-- /.modal -->
+ </div>
+ 
+  <!-- MODAL ALTERAÇÃO -->
+  <div class="modal fade modal2" id="modal-altera">
+     <div class="modal-dialog">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span></button>
+           <h4 class="modal-title">Alterar Apostila</h4>
+         </div>
+         <div class="modal-body">
+          <form class="form-horizontal" action="${s:mvcUrl('AC#alterar').build() }" method="POST">
+              <div class="box-body">
+              	<input type="hidden" value="${apostila.idApostila }" name="idApostila" id="idApostila">
+                <div class="form-group">
+                  <label for="nome" class="col-sm-4 control-label">Descrição*</label>
+                  <div class="col-sm-5">
+                    <input type="text" value="" class="form-control" name="descricao" id="descricao" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="nome" class="col-sm-4 control-label">Páginas*</label>
+                  <div class="col-sm-5">
+                    <input type="text" onkeypress="validate(event)" value="" class="form-control" name="paginas" id="paginas" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                <label class="col-sm-4 control-label">Tipo Apostila</label>
+                <div class="col-sm-5">
+                <select name="tipo" id="tipo" class="form-control select2 select2-hidden-accessible " style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                  <c:forEach items="${tipos }" var="tipo">
+                  <c:choose>
+                  	<c:when test="${tipo == apostila.tipo }">
+                  		<option value="${tipo}" selected>${tipo}</option>
+                  	</c:when>
+                  	<c:otherwise>
+                  		<option value="${tipo}">${tipo}</option>
+                  	</c:otherwise>
+                  </c:choose>
+                  </c:forEach>
+                </select>
+                </div>
+              </div>
+              
+              </div>
+              <div class="modal-footer">
+	           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
+	           <button type="submit" class="btn btn-primary btn-md">Salvar</button>
+         </div>  
+            </form>
+       </div>
+       <!-- /.modal-content -->
+     </div>
+     <!-- /.modal-dialog -->
+   </div>
+   <!-- /.modal -->
+ </div>
+ 
  <!-- Rodapé -->
   <c:import url="../comum/rodape.jsp" />
 
@@ -158,7 +276,43 @@ desired effect
 <script src="${contextPath}resources/dist/js/demo.js"></script>
 <!-- page script -->
 <script>
-  $(function () {
+$(document).ready(function () {
+	
+	  //your code here
+	$(document).on("click", ".open-AddQtd", function () {
+	     var apostilaId = $(this).data('apostila-id');
+	     var apostilaTipo = $(this).data('apostila-tipo');
+	     var apostilaDescricao = $(this).data('apostila-descricao');
+	     console.log(apostilaId);
+	     console.log(apostilaTipo);
+	     console.log(apostilaDescricao);
+	     $(".modal-body #idApostila").val( apostilaId );
+	     $(".modal-body #descricao").val( apostilaDescricao );
+	     $(".modal-body #tipo").val( apostilaTipo );
+	     // As pointed out in comments, 
+	     // it is superfluous to have to manually call the modal.
+	     // $('#addBookDialog').modal('show');
+	});
+	  
+	  
+	$(document).on("click", ".open-Alt", function () {
+		console.log("oba");
+	     var apostilaId = $(this).data('apostila-id');
+	     var apostilaTipo = $(this).data('apostila-tipo');
+	     var apostilaDescricao = $(this).data('apostila-descricao');
+	     var apostilaPaginas = $(this).data('apostila-paginas');
+	     $(".modal-body #idApostila").val( apostilaId );
+	     $(".modal-body #descricao").val( apostilaDescricao );
+	     $(".modal-body #tipo").val( apostilaTipo );
+	     $(".modal-body #paginas").val( apostilaPaginas );
+	     console.log(7);
+	     // As pointed out in comments, 
+	     // it is superfluous to have to manually call the modal.
+	     // $('#addBookDialog').modal('show');
+	});  
+});
+
+$(function () {
     $('#tabelaApostilas').DataTable({
       'paging'      : true,
       'lengthChange': false,
