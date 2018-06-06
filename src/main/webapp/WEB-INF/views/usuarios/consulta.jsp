@@ -109,8 +109,9 @@ desired effect
                   <th>Login</th>
                   <th>Senha</th>
                   <th>Permissão</th>
+                  <th>Status</th>
+                  <th width="8%">Alterar Status</th>
                   <th width="5%">Alterar</th>
-                  <th width="5%">Remover</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -119,8 +120,25 @@ desired effect
 	                  <td>${usuario.login }</td>
 	                  <td>${usuario.senha }</td>
 	                  <td>${usuario.permissao }</td>
-	                  <td align="center"><a href="${s:mvcUrl('UC#detalhe').arg(0,usuario.idUsuario).build() }"><i class="fa fa-wrench"></i></a></td>
-	                  <td align="center"><a href="${s:mvcUrl('UC#remover').arg(0,usuario.idUsuario).build() }"><i class="fa fa-remove"></i></a></td>
+	                  <c:choose>
+	                   <c:when test="${usuario.status == 'Ativo'}">
+	                   		<td><span class="label label-success">${usuario.status }</span></td>
+	                   		<td align="center">
+		                  	<a class="open-Remove" href="#modal-remove" data-usuario-id="${usuario.idUsuario }"
+		                  	 data-toggle="modal" data-target=".modal2"><i class="fa fa-remove"></i></a>
+	                  </td>
+	                   </c:when>
+	                   <c:otherwise>
+	                   		<td><span class="label label-danger">${usuario.status }</span></td>
+	                   		<td align="center">
+		                  	<a href="${s:mvcUrl('UC#ativar').arg(0, usuario.idUsuario).build() }"><i class="fa fa-check"></i></a></td>
+	                   </c:otherwise>
+	                  </c:choose>
+	                  <td align="center">
+	                  	<a class="open-Alt" href="#modal-altera" data-usuario-id="${usuario.idUsuario }"
+	                  	 data-usuario-login="${usuario.login }" data-usuario-senha="${usuario.senha }" data-usuario-permissao="${usuario.permissao }"
+	                  	 data-toggle="modal" data-target=".modal1"><i class="fa fa-wrench"></i></a>
+	                  </td>
 	                </tr>
                  </c:forEach>
                 </tbody>
@@ -132,6 +150,95 @@ desired effect
     </section>
   </div>
   
+   <div class="modal fade modal1" id="modal-altera">
+     <div class="modal-dialog">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span></button>
+           <h4 class="modal-title">Alterar Usuário</h4>
+         </div>
+         <div class="modal-body">
+          <form class="form-horizontal" action="${s:mvcUrl('UC#alterar').build() }" method="POST">
+              <div class="box-body">
+              	<input type="hidden" value="${usuario.idUsuario }" name="idUsuario" id="idUsuario">
+                <div class="form-group">
+                  <label for="nome" class="col-sm-4 control-label">Login*</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" value="" name="login" id="login" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="nome" class="col-sm-4 control-label">Senha*</label>
+                  <div class="col-sm-5">
+                    <input type="text" value="" class="form-control" name="senha" id="senha" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                <label class="col-sm-4 control-label">Permissão*</label>
+                <div class="col-sm-5">
+                <select name="permissao" id="permissao" class="form-control select2 select2-hidden-accessible " style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                  <c:forEach items="${permissoes }" var="permissao">
+                  	<c:choose>
+                  	<c:when test="${permissao == usuario.permissao }">
+                  		<option value="${permissao}" selected>${permissao}</option>
+                  	</c:when>
+                  	<c:otherwise>
+                  		<option value="${permissao}">${permissao}</option>
+                  	</c:otherwise>
+                  </c:choose>
+                  </c:forEach>
+                </select>
+                </div>
+              </div>
+              
+              </div>
+              <div align="center" class="box-footer">
+                <button type="submit" class="btn btn-primary btn-md">Alterar</button>
+              </div>  
+            </form>
+       </div>
+       <!-- /.modal-content -->
+     </div>
+     <!-- /.modal-dialog -->
+   </div>
+   <!-- /.modal -->
+ </div>
+ 
+    <div class="modal modal-danger fade modal2" id="modal-remove">
+     <div class="modal-dialog">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span></button>
+           <h4 class="modal-title">Desativar Usuário</h4>
+         </div>
+         <div class="modal-body">
+          <form class="form-horizontal" action="${s:mvcUrl('UC#remover').build() }" method="POST">
+              <div class="box-body">
+              	<input type="hidden" value="${usuario.idUsuario }" name="idUsuario" id="idUsuario">
+                <div class="form-group">
+                  <label for="nome" class="col-sm-2 control-label"></label>
+                  <div class="col-sm-8">
+                    <p style="font-size:18px;">Tem certeza que deseja desativar este usuário?</p>
+                  </div>
+                </div>
+              </div>
+              <div align="center" class="box-footer" style="background-color:#d33724;border-top:0px;">
+                <button type="submit" class="btn btn-outline btn-md">Remover</button>
+              </div>  
+            </form>
+       </div>
+       <!-- /.modal-content -->
+     </div>
+     <!-- /.modal-dialog -->
+   </div>
+   <!-- /.modal -->
+ </div>
+ 
+ 
  <!-- Rodapé -->
   <c:import url="../comum/rodape.jsp" />
 
@@ -155,6 +262,34 @@ desired effect
 <!-- AdminLTE for demo purposes -->
 <script src="${contextPath}resources/dist/js/demo.js"></script>
 <!-- page script -->
+<script>
+$(document).ready(function () {
+	
+	  //your code here
+	$(document).on("click", ".open-Alt", function () {
+	     var usuarioId = $(this).data('usuario-id');
+	     var usuarioLogin = $(this).data('usuario-login');
+	     var usuarioSenha = $(this).data('usuario-senha');
+	     var usuarioPermissao = $(this).data('usuario-permissao');
+	     $(".modal-body #idUsuario").val( usuarioId );
+	     $(".modal-body #login").val( usuarioLogin );
+	     $(".modal-body #senha").val( usuarioSenha );
+	     $(".modal-body #permissao").val( usuarioPermissao );
+	     // As pointed out in comments, 
+	     // it is superfluous to have to manually call the modal.
+	     // $('#addBookDialog').modal('show');
+	});
+	  
+	$(document).on("click", ".open-Remove", function () {
+	     var usuarioId = $(this).data('usuario-id');
+	     $(".modal-body #idUsuario").val( usuarioId );
+	     // As pointed out in comments, 
+	     // it is superfluous to have to manually call the modal.
+	     // $('#addBookDialog').modal('show');
+	});  
+});
+
+</script>
 <script>
   $(function () {
     $('#tabelaApostilas').DataTable({

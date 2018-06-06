@@ -113,6 +113,8 @@ desired effect
                   <th>Email</th>
                   <th>Celular</th>
                   <th>Sexo</th>
+                  <th>Status</th>
+ 				  <th width="8%">Alterar Status</th>
                   <th width="5%">Adicionar</th>
                   <th width="5%">Alterar</th>
                 </tr>
@@ -122,12 +124,37 @@ desired effect
 	                <tr>
 	                  <td>${aluno.nome }</td>
 	                  <td>${aluno.cpf }</td>
-	                  <td><fmt:formatDate value="${aluno.dtNasc.time }" pattern="dd/MM/yyyy"/></td>
+	                  <td>${aluno.dtNasc }</td>
 	                  <td>${aluno.email }</td>
 	                  <td>${aluno.celular }</td>
 	                  <td>${aluno.sexo }</td>
-	                  <td align="center"><a title="Adicionar apostila" href="${s:mvcUrl('AC#apostilasForm').arg(0,aluno.idAluno).build() }"><i class="fa fa-plus-circle"></i></a></td>
-	                  <td align="center"><a href="${s:mvcUrl('AC#detalheAluno').arg(0,aluno.idAluno).build() }"><i class="fa fa-wrench"></i></a></td>
+	                  <c:choose>
+	                   <c:when test="${aluno.status == 'Ativo'}">
+	                   		<td><span class="label label-success">${aluno.status }</span></td>
+	                   		<td align="center">
+		                  	<a class="open-Remove" href="#modal-remove" data-aluno-id="${aluno.idAluno }"
+		                  	 data-toggle="modal" data-target=".modal3"><i class="fa fa-remove"></i></a></td>
+		                    <td align="center">
+		                  	<a class="open-AddApostila" href="#modal-adiciona" data-aluno-id="${aluno.idAluno }"
+		                  	 data-aluno-nome="${aluno.nome }" data-aluno-cpf="${aluno.cpf }" data-toggle="modal"
+		                  	 data-target=".modal1">
+		                  	 <i class="fa fa-plus-circle"></i></a>
+	                  		</td>
+	                   </c:when>
+	                   <c:otherwise>
+	                   		<td><span class="label label-danger">${aluno.status }</span></td>
+	                   		<td align="center">
+		                  	<a href="${s:mvcUrl('AC#ativarAluno').arg(0, aluno.idAluno).build() }"><i class="fa fa-check"></i></a></td>
+		                  	<td></td>
+	                   </c:otherwise>
+	                  </c:choose>
+	                  <td align="center">
+	                  	<a class="open-Alt" href="#modal-adiciona" data-aluno-id="${aluno.idAluno }"
+	                  	 data-aluno-nome="${aluno.nome }" data-aluno-cpf="${aluno.cpf }" data-aluno-email="${aluno.email }"
+	                  	 data-aluno-celular="${aluno.celular }" data-aluno-dtnasc="${aluno.dtNasc }" data-aluno-sexo="${aluno.sexo }" data-toggle="modal"
+	                  	 data-target=".modal2">
+	                  	 <i class="fa fa-wrench"></i></a>
+	                  </td>
 	                </tr>
                  </c:forEach>
                 </tbody>
@@ -139,6 +166,177 @@ desired effect
     </section>
   </div>
   
+  <div class="modal fade modal1" id="modal-adciona">
+     <div class="modal-dialog">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span></button>
+           <h4 class="modal-title">Adicionar Apostila</h4>
+         </div>
+         <div class="modal-body">
+          <form class="form-horizontal" action="${s:mvcUrl('AC#adicionarApostila').build() }" method="POST">
+              <div class="box-body">
+              <input type="hidden" value="${aluno.idAluno }" name="idAluno" id="idAluno">
+                <div class="form-group">
+                  <label for="nome" class="col-sm-4 control-label">Nome</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" value="" name="nome" id="nome" disabled>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="nome" class="col-sm-4 control-label">CPF</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" value="" name="cpf" id="cpf" disabled>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                <label class="col-sm-4 control-label">Aposila*</label>
+                <div class="col-sm-5">
+                <select name="idApostila" id="idApostila" class="form-control select2 select2-hidden-accessible " style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                  <c:forEach items="${apostilas }" var="apostila">
+                  	<option value="${apostila.idApostila}" selected>${apostila.descricao} - ${apostila.tipo}</option>
+                  </c:forEach>
+                </select>
+                </div>
+              </div>
+              
+              </div>
+              <div align="center" class="box-footer">
+                <button type="submit" class="btn btn-primary btn-md">Adicionar</button>
+              </div>  
+            </form>   
+       </div>
+       <!-- /.modal-content -->
+     </div>
+     <!-- /.modal-dialog -->
+   </div>
+   <!-- /.modal -->
+ </div>
+ 
+ <div class="modal fade modal2" id="modal-adciona">
+     <div class="modal-dialog">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span></button>
+           <h4 class="modal-title">Alterar Aluno</h4>
+         </div>
+         <div class="modal-body">
+          <form class="form-horizontal" action="${s:mvcUrl('AC#alterarAluno').build() }" method="POST">
+              <div class="box-body">
+              <input type="hidden" value="${aluno.idAluno }" id="idAluno" name="idAluno">
+                <div class="form-group">
+                  <label for="nome" class="col-sm-4 control-label">Nome*</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" value="" name="nome" id="nome" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="nome" class="col-sm-4 control-label">Email*</label>
+                  <div class="col-sm-5">
+                    <input type="email" class="form-control" value="" name="email" id="email" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="nome" class="col-sm-4 control-label">Celular*</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" value="" name="celular" id="celular" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="nome" class="col-sm-4 control-label">Data de Nasc.*</label>
+                  <div class="col-sm-5">
+                    <input type="text" value="" class="form-control" name="dtNasc" id="dtNasc" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="nome" class="col-sm-4 control-label">CPF*</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" value="" name="cpf" id="cpf" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                <label class="col-sm-4 control-label">Sexo*</label>
+                <div class="col-sm-5">
+               <select name="sexo" id="sexo" class="form-control select2 select2-hidden-accessible " style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                  <c:forEach items="${sexos }" var="sexo">
+                  <c:choose>
+                  	<c:when test="${sexo == aluno.sexo }">
+                  		<option value="${sexo}" selected>${sexo}</option>
+                  	</c:when>
+                  	<c:otherwise>
+                  		<option value="${sexo}">${sexo}</option>
+                  	</c:otherwise>
+                  </c:choose>
+                  </c:forEach>
+                </select>
+                </div>
+              </div>
+              
+              <div class="form-group">
+              <label class="col-sm-4 control-label">Apostilas</label>
+              <div class="col-sm-5"> 
+                  <select name="apostilas" multiple="" class="form-control" disabled="">
+                  <c:forEach items="${apostilas }" var="apostila">
+                  	<option value="${apostila.idApostila}">${apostila.descricao} - ${apostila.tipo}</option>
+                  </c:forEach>
+                  </select>
+              </div>
+              </div>
+              
+              </div>
+             
+              <div align="center" class="box-footer">
+                <button type="submit" class="btn btn-primary btn-md">Alterar</button>
+              </div>  
+            </form>
+       </div>
+       <!-- /.modal-content -->
+     </div>
+     <!-- /.modal-dialog -->
+   </div>
+   <!-- /.modal -->
+ </div>
+  
+  <div class="modal modal-danger fade modal3" id="modal-remove">
+     <div class="modal-dialog">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span></button>
+           <h4 class="modal-title">Desativar Aluno</h4>
+         </div>
+         <div class="modal-body">
+          <form class="form-horizontal" action="${s:mvcUrl('AC#removerAluno').build() }" method="POST">
+              <div class="box-body">
+              	<input type="hidden" value="${aluno.idAluno }" name="idAluno" id="idAluno">
+                <div class="form-group">
+                  <label for="nome" class="col-sm-2 control-label"></label>
+                  <div class="col-sm-8">
+                    <p style="font-size:18px;">Tem certeza que deseja desativar este(a) aluno(a)?</p>
+                  </div>
+                </div>
+              </div>
+              <div align="center" class="box-footer" style="background-color:#d33724;border-top:0px;">
+                <button type="submit" class="btn btn-outline btn-md">Remover</button>
+              </div>  
+            </form>
+       </div>
+       <!-- /.modal-content -->
+     </div>
+     <!-- /.modal-dialog -->
+   </div>
+   <!-- /.modal -->
+ </div>
+  
  <!-- Rodapé -->
   <c:import url="../comum/rodape.jsp" />
 
@@ -146,7 +344,6 @@ desired effect
 <!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
-
 <script src="${contextPath}resources/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="${contextPath}resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -161,7 +358,55 @@ desired effect
 <script src="${contextPath}resources/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="${contextPath}resources/dist/js/demo.js"></script>
+<script src="${contextPath}resources/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="${contextPath}resources/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="${contextPath}resources/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- page script -->
+<script>
+$(document).ready(function () {
+	$(document).on("click", ".open-AddApostila", function () {
+	     var alunoId = $(this).data('aluno-id');
+	     var alunoNome = $(this).data('aluno-nome');
+	     var alunoCpf = $(this).data('aluno-cpf');
+	     $(".modal-body #idAluno").val( alunoId );
+	     $(".modal-body #nome").val( alunoNome );
+	     $(".modal-body #cpf").val( alunoCpf );
+	     // As pointed out in comments, 
+	     // it is superfluous to have to manually call the modal.
+	     // $('#addBookDialog').modal('show');
+	});
+	
+	$(document).on("click", ".open-Alt", function () {
+	     var alunoId = $(this).data('aluno-id');
+	     var alunoNome = $(this).data('aluno-nome');
+	     var alunoCpf = $(this).data('aluno-cpf');
+	     var alunoEmail = $(this).data('aluno-email');
+	     var alunoCelular = $(this).data('aluno-celular');
+	     var alunoSexo = $(this).data('aluno-sexo');
+	     var alunoDtNasc = $(this).data('aluno-dtnasc');
+	     console.log($(this).data('aluno-dtnasc'));
+	     $(".modal-body #idAluno").val( alunoId );
+	     $(".modal-body #nome").val( alunoNome );
+	     $(".modal-body #email").val( alunoEmail );
+	     $(".modal-body #celular").val( alunoCelular );
+	     $(".modal-body #cpf").val( alunoCpf );
+	     $(".modal-body #sexo").val( alunoSexo );
+	     $(".modal-body #dtNasc").val( alunoDtNasc );
+	     // As pointed out in comments, 
+	     // it is superfluous to have to manually call the modal.
+	     // $('#addBookDialog').modal('show');
+	});
+	
+	$(document).on("click", ".open-Remove", function () {
+	     var alunoId = $(this).data('aluno-id');
+	     $(".modal-body #idAluno").val( alunoId );
+	     // As pointed out in comments, 
+	     // it is superfluous to have to manually call the modal.
+	     // $('#addBookDialog').modal('show');
+	});
+	
+});
+</script>
 <script>
   $(function () {
     $('#tabelaApostilas').DataTable({
@@ -172,6 +417,18 @@ desired effect
       'info'        : true,
       'autoWidth'   : false
     })
+  })
+  
+  $(function () {
+
+    //Datemask dd/mm/yyyy
+    $('#dtNasc').inputmask('dd/mm/yyyy');
+    
+    //CPFMask
+    $('#cpf').inputmask('999.999.999-99');
+    
+    //Telefone
+    $('#celular').inputmask('(99) 99999-9999');
   })
 </script>
 </body>

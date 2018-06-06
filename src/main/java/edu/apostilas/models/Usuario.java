@@ -16,8 +16,18 @@ public class Usuario {
 	private String senha;
 	
 	@Enumerated(EnumType.STRING)
+	private Status status;
+	
+	@Enumerated(EnumType.STRING)
 	private Permissao permissao;
 	
+	
+	public Status getStatus() {
+		return status;
+	}
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 	public int getIdUsuario() {
 		return idUsuario;
 	}
@@ -42,8 +52,5 @@ public class Usuario {
 	public void setPermissao(Permissao permissao) {
 		this.permissao = permissao;
 	}
-	
-	
-	
 	
 }

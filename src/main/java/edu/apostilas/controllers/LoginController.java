@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.apostilas.dao.UsuarioDAO;
+import edu.apostilas.models.Status;
 import edu.apostilas.models.Usuario;
 
 @Controller
@@ -37,6 +38,9 @@ public class LoginController {
 		Usuario usuario = usuarioDao.loginUsuario(login, senha);
 		if(usuario == null) {
 			model.addAttribute("loginError", "Login ou senha inválidos!");
+			return "login";
+		} else if(usuario.getStatus().equals(Status.Inativo)) {
+			model.addAttribute("loginError", "Usuário inativo");
 			return "login";
 		}
 		session.setAttribute("usuarioLogado", usuario);

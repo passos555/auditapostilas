@@ -133,7 +133,6 @@ desired effect
 	                  	 data-apostila-paginas="${apostila.paginas }" data-toggle="modal"
 	                  	 data-target=".modal2"><i class="fa fa-wrench"></i></a>
 	                  </td>
-	                  
 	                </tr>
                  </c:forEach>
                 </tbody>
@@ -180,10 +179,9 @@ desired effect
                 </div>
               
               </div>
-              <div class="modal-footer">
-           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
-           <button type="submit" class="btn btn-primary btn-md">Salvar</button>
-         </div> 
+              <div align="center" class="box-footer">
+               <button type="submit" class="btn btn-primary btn-md">Adicionar</button>
+           </div>  
          </form>           
        </div>
        <!-- /.modal-content -->
@@ -239,10 +237,11 @@ desired effect
               </div>
               
               </div>
-              <div class="modal-footer">
-	           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
-	           <button type="submit" class="btn btn-primary btn-md">Salvar</button>
-         </div>  
+              
+           <div align="center" class="box-footer">
+               <button type="submit" class="btn btn-primary btn-md">Alterar</button>
+           </div>  
+          
             </form>
        </div>
        <!-- /.modal-content -->
@@ -283,9 +282,6 @@ $(document).ready(function () {
 	     var apostilaId = $(this).data('apostila-id');
 	     var apostilaTipo = $(this).data('apostila-tipo');
 	     var apostilaDescricao = $(this).data('apostila-descricao');
-	     console.log(apostilaId);
-	     console.log(apostilaTipo);
-	     console.log(apostilaDescricao);
 	     $(".modal-body #idApostila").val( apostilaId );
 	     $(".modal-body #descricao").val( apostilaDescricao );
 	     $(".modal-body #tipo").val( apostilaTipo );
@@ -305,7 +301,6 @@ $(document).ready(function () {
 	     $(".modal-body #descricao").val( apostilaDescricao );
 	     $(".modal-body #tipo").val( apostilaTipo );
 	     $(".modal-body #paginas").val( apostilaPaginas );
-	     console.log(7);
 	     // As pointed out in comments, 
 	     // it is superfluous to have to manually call the modal.
 	     // $('#addBookDialog').modal('show');

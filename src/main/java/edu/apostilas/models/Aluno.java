@@ -1,15 +1,11 @@
 package edu.apostilas.models;
 
-import java.util.Calendar;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Aluno {
@@ -22,12 +18,22 @@ public class Aluno {
 	private String celular;
 	
 	@Enumerated(EnumType.STRING)
+	private Status status;
+	
+	@Enumerated(EnumType.STRING)
 	private Sexo sexo;
 	
-	@DateTimeFormat
-	private Calendar dtNasc;
+	private String dtNasc;
 	
 	
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	public Sexo getSexo() {
 		return sexo;
 	}
@@ -76,13 +82,13 @@ public class Aluno {
 		this.celular = celular;
 	}
 
-	public Calendar getDtNasc() {
+	public String getDtNasc() {
 		return dtNasc;
 	}
 
-	public void setDtNasc(Calendar dtNasc) {
+	public void setDtNasc(String dtNasc) {
 		this.dtNasc = dtNasc;
 	}
-	
+
 	
 }

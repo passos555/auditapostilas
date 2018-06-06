@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.apostilas.models.Aluno;
 import edu.apostilas.models.Apostila;
+import edu.apostilas.models.Status;
 
 @Repository
 @Transactional
@@ -70,5 +71,35 @@ public class AlunoDAO {
 	public Aluno findAluno(int id) {
 		return manager.createQuery("select distinct(a) from Aluno a where a.idAluno = :id", Aluno.class)
 				.setParameter("id", id).getSingleResult();
+	}
+	
+	public long countAlunos() {
+		return (long)manager.createQuery("select count(a.idAluno) from Aluno a").getSingleResult();
+	}
+	
+	public boolean ativar(Aluno aluno) {
+		try {
+			Aluno alunoAntigo = (Aluno)manager.find(Aluno.class, aluno.getIdAluno());
+			if(alunoAntigo != null) {
+				alunoAntigo.setStatus(Status.Ativo);
+				return true;
+			} 
+		} catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
+	
+	public boolean remover(Aluno aluno) {
+		try {
+			Aluno alunoAntigo = (Aluno)manager.find(Aluno.class, aluno.getIdAluno());
+			if(aluno != null) {
+				alunoAntigo.setStatus(Status.Inativo);
+				return true;
+			}		
+		} catch (Exception e) {
+			return false;
+		}
+		return false;
 	}
 }

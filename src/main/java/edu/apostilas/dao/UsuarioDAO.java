@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.apostilas.models.Status;
 import edu.apostilas.models.Usuario;
 
 @Repository
@@ -35,9 +36,8 @@ public class UsuarioDAO {
 	public Usuario loginUsuario(String login, String senha) {
 		try {
 			Usuario usuario = this.findUsuario(login);
-			if(usuario != null && usuario.getSenha().equals(senha)) {
+			if(usuario != null && usuario.getSenha().equals(senha)) 
 				return usuario;
-			}
 		} catch (Exception e) {
 			return null;
 		}
@@ -64,13 +64,34 @@ public class UsuarioDAO {
 		return false;
 	}
 	
+	public boolean ativar(Usuario usuario) {
+		try {
+			Usuario usuarioAntigo = (Usuario)manager.find(Usuario.class, usuario.getIdUsuario());
+			if(usuarioAntigo != null) {
+				usuarioAntigo.setStatus(Status.Ativo);
+				return true;
+			} 
+		} catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
+	
 	public Usuario findUsuario(int id) {
 		return manager.createQuery("select distinct(u) from Usuario u where u.idUsuario = :id", Usuario.class)
 				.setParameter("id", id).getSingleResult();
 	}
 	
-	public void remover(Usuario usuario) {
-		Usuario c = manager.merge(usuario);
-		manager.remove(c);
+	public boolean remover(Usuario usuario) {
+		try {
+			Usuario usuarioAntigo = (Usuario)manager.find(Usuario.class, usuario.getIdUsuario());
+			if(usuarioAntigo != null) {
+				usuarioAntigo.setStatus(Status.Inativo);
+				return true;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+	  return false;
 	}
 }

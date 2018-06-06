@@ -2,6 +2,8 @@ package edu.apostilas.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.apostilas.dao.UsuarioDAO;
 import edu.apostilas.models.Permissao;
+import edu.apostilas.models.Status;
 import edu.apostilas.models.Usuario;
 
 @Controller
@@ -36,6 +39,7 @@ public class UsuarioController {
 			redirectAttributes.addFlashAttribute("erro", "Este login já está sendo usado!");
 			return model;
 		}
+		usuario.setStatus(Status.Ativo);
 		usuarioDao.gravar(usuario);
 		redirectAttributes.addFlashAttribute("sucesso", "Usuário cadastrado com sucesso!");
 		return model;
@@ -46,6 +50,7 @@ public class UsuarioController {
 		ModelAndView model = new ModelAndView("usuarios/consulta");
 		List<Usuario> usuarios = usuarioDao.listar();
 		model.addObject("usuarios", usuarios);
+		model.addObject("permissoes", Permissao.values());
 		return model;
 	}
 	
@@ -70,6 +75,39 @@ public class UsuarioController {
 		return model;
 	}
 	
+	@RequestMapping(value = "/usuarios/remover", method = RequestMethod.POST)
+	public ModelAndView remover(Usuario usuario, RedirectAttributes redirectAttributes,  HttpSession session) {
+		ModelAndView model = new ModelAndView("redirect:/usuarios/consulta");
+		Usuario usuarioLogado = (Usuario)session.getAttribute("usuarioLogado");
+		
+		if(usuarioLogado.getIdUsuario() == usuario.getIdUsuario()) {
+			redirectAttributes.addFlashAttribute("erro", "Você não pode se remover!");
+			return model;
+		} else {
+			boolean result = usuarioDao.remover(usuario);
+			if(result)
+				redirectAttributes.addFlashAttribute("sucesso", "Usuário removido com sucesso!");
+			else
+				redirectAttributes.addFlashAttribute("erro", "Usuário não foi removido!");
+				
+			return model;
+		}
+	}
+	
+	@RequestMapping(value = "/usuarios/ativar{id}")
+	public ModelAndView ativar(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+		ModelAndView model = new ModelAndView("redirect:/usuarios/consulta");
+		Usuario usuario = usuarioDao.findUsuario(id);
+		boolean result = usuarioDao.ativar(usuario);
+		if(result)
+			redirectAttributes.addFlashAttribute("sucesso", "Usuário ativado com sucesso!");
+		else
+			redirectAttributes.addFlashAttribute("erro", "Usuário não foi ativado!");
+			
+		return model;
+	}
+	
+	/*
 	@RequestMapping("/usuarios/remover/{id}")
 	public ModelAndView remover(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
 		ModelAndView model = new ModelAndView("redirect:/usuarios/consulta");
@@ -77,5 +115,5 @@ public class UsuarioController {
 		usuarioDao.remover(usuario);
 		redirectAttributes.addFlashAttribute("sucesso", "Usuário removido com sucesso!");
 		return model;
-	}
+	}*/
 }
