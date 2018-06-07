@@ -67,68 +67,125 @@ desired effect
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <div style="margin-left:400px;margin-top:200px;" class="col-md-6">
-          <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">CPU Traffic</span>
-              <span class="info-box-number">90<small>%</small></span>
+    <section class="content-header">
+      <h1>
+        Dashboard
+        <small>Informações Gerais</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li>Home</li>
+        <li class="active">Dashboard</li>
+      </ol>
+    </section>
+    
+ 	<section class="content">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3>${movimentos }</h3>
+              <p>Movimento(s) realizado(s) este mês</p>
             </div>
-            <!-- /.info-box-content -->
+            <div class="icon">
+              <i class="ion ion-arrow-move"></i>
+            </div>
+            <a href="/auditapostilas/movimentos/consulta" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
-          <!-- /.info-box -->
         </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3>${apostilas }</h3>
 
-            <div class="info-box-content">
-              <span class="info-box-text">Likes</span>
-              <span class="info-box-number">41,410</span>
+              <p>Apostilas no estoque</p>
             </div>
-            <!-- /.info-box-content -->
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="/auditapostilas/apostilas/consulta" class="small-box-footer">More info<i class="fa fa-arrow-circle-right"></i></a>
           </div>
-          <!-- /.info-box -->
         </div>
-        <!-- /.col -->
-
-        <!-- fix for small devices only -->
-        <div class="clearfix visible-sm-block"></div>
-
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Sales</span>
-              <span class="info-box-number">760</span>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3>${alunos }</h3>
+              <p>Alunos</p>
             </div>
-            <!-- /.info-box-content -->
+            <div class="icon">
+              <i class="ion ion-person"></i>
+            </div>
+            <a href="/auditapostilas/alunos/consulta" class="small-box-footer">Mais informações <i class="fa fa-arrow-circle-right"></i></a>
           </div>
-          <!-- /.info-box -->
         </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Alunos</span>
-              <span class="info-box-number">${alunos }</span>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3>1</h3>
+              <p>Gráfico</p>
             </div>
-            <!-- /.info-box-content -->
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="#graficos" class="open-Graficos small-box-footer">Mostrar <i class="fa fa-arrow-circle-right"></i></a>
           </div>
-          <!-- /.info-box -->
+        </div>
+        <!-- ./col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    
+    <section class="content" id="graficos">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+       <div class="col-md-6">
+       <div class="box box-danger">
+            <div class="box-header with-border">
+              <h3 class="box-title">Tipos de Apostila</h3>
+            </div>
+            <div class="box-body">
+              
+            </div>
+            <!-- /.box-body -->
+      </div>
+      </div>
+      <div class="col-md-6">
+       <!-- Donut chart -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <i class="fa fa-bar-chart-o"></i>
+
+              <h3 class="box-title">Donut Chart</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div id="donut-chart" style="height: 300px;"></div>
+            </div>
+            <!-- /.box-body-->
+          </div>
+          <!-- /.box -->
         </div>
         <!-- /.col -->
       </div>
-        </div>
+      </div>
+      </div>
+      <!-- /.row -->
+    </section>
     
   </div>
+  
+  
   
   <!-- Rodapé -->
   <c:import url="comum/rodape.jsp" />
@@ -137,16 +194,72 @@ desired effect
 <!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
-
-<!-- jQuery 3 -->
-<script src="resources/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="${contextPath}resources/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- AdminLTE App -->
-<script src="resources/dist/js/adminlte.min.js"></script>
+<script src="${contextPath}resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. -->
+<!-- SlimScroll -->
+<script src="${contextPath}resources/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="${contextPath}resources/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="${contextPath}resources/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="${contextPath}resources/dist/js/demo.js"></script>
+<script src="${contextPath}resources/bower_components/Flot/jquery.flot.js"></script>
+<script src="${contextPath}resources/bower_components/Flot/jquery.flot.resize.js"></script>
+<script src=".${contextPath}resources/bower_components/Flot/jquery.flot.pie.js"></script>
+<script src="${contextPath}resources/bower_components/Flot/jquery.flot.categories.js"></script>
+<script>
+  $(function () {
+    /*
+     * DONUT CHART
+     * -----------
+     */
+
+    var donutData = [
+      { label: 'Series2', data: 30, color: '#3c8dbc' },
+      { label: 'Series3', data: 20, color: '#0073b7' },
+      { label: 'Series4', data: 50, color: '#00c0ef' }
+    ]
+    $.plot('#donut-chart', donutData, {
+      series: {
+        pie: {
+          show       : true,
+          radius     : 1,
+          innerRadius: 0.5,
+          label      : {
+            show     : true,
+            radius   : 2 / 3,
+            formatter: labelFormatter,
+            threshold: 0.1
+          }
+
+        }
+      },
+      legend: {
+        show: false
+      }
+    })
+    /*
+     * END DONUT CHART
+     */
+
+  })
+
+  /*
+   * Custom Label formatter
+   * ----------------------
+   */
+  function labelFormatter(label, series) {
+    return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
+      + label
+      + '<br>'
+      + Math.round(series.percent) + '%</div>'
+  }
+</script>
+<script>
+
+</script>
 </body>
 </html>

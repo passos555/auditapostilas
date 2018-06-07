@@ -12,16 +12,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.apostilas.dao.AlunoDAO;
 import edu.apostilas.dao.ApostilaDAO;
 import edu.apostilas.dao.ApostilaXAlunoDAO;
+import edu.apostilas.dao.LogAlunoDAO;
 import edu.apostilas.dao.MovimentoDAO;
 import edu.apostilas.models.Aluno;
 import edu.apostilas.models.Apostila;
 import edu.apostilas.models.ApostilaXAluno;
+import edu.apostilas.models.LogAluno;
 import edu.apostilas.models.Movimento;
 import edu.apostilas.models.Sexo;
 import edu.apostilas.models.Status;
@@ -43,6 +46,9 @@ public class AlunoController {
 	@Autowired
 	private MovimentoDAO movimentoDao;
 	
+	@Autowired
+	private LogAlunoDAO logAlunoDao;
+	
 	@RequestMapping("/alunos/novo")
 	public ModelAndView novoForm() {
 		ModelAndView model = new ModelAndView("alunos/novo");
@@ -51,7 +57,7 @@ public class AlunoController {
 	}
 	
 	@RequestMapping(value = "/alunos/novo", method = RequestMethod.POST)
-	public ModelAndView gravarAluno(Aluno aluno, RedirectAttributes redirectAttributes) {
+	public ModelAndView gravarAluno(Aluno aluno, RedirectAttributes redirectAttributes, HttpSession session) {
 		ModelAndView model = new ModelAndView("redirect:/alunos/novo");
 		
 		Aluno alunoExistente = alunoDao.findAluno(aluno.getCpf());
@@ -61,6 +67,7 @@ public class AlunoController {
 		}
 		aluno.setStatus(Status.Ativo);
 		alunoDao.gravar(aluno);
+		gravaLog(aluno, session, "Inserção", "", aluno.toString());
 		redirectAttributes.addFlashAttribute("sucesso", "Aluno(a) cadastrado(a) com sucesso!");
 		return model;
 	}
@@ -70,46 +77,32 @@ public class AlunoController {
 		ModelAndView model = new ModelAndView("alunos/consulta");
 		List<Aluno> alunos = alunoDao.listar();
 		List<Apostila> apostilas = apostilaDao.listar();
+		for (Aluno aluno : alunos) {
+			aluno.setApostilas(alunoDao.listarApostilas(aluno.getIdAluno()));
+		}
 		model.addObject("alunos", alunos);
 		model.addObject("apostilas", apostilas);
 		model.addObject("sexos", Sexo.values());
 		return model;
 	}
 	
-	/*
-	@RequestMapping("/alunos/detalhe/{id}")
-	public ModelAndView detalheAluno(@PathVariable("id") Integer id) {
-		ModelAndView model = new ModelAndView("alunos/detalhe");
-		Aluno aluno = alunoDao.findAluno(id);
-		List<Apostila> apostilas = alunoDao.listarApostilas(id);
-		model.addObject("aluno", aluno);
-		model.addObject("sexos", Sexo.values());
-		model.addObject("apostilas", apostilas);
-		return model;
-	}*/
-	
 	@RequestMapping(value = "/alunos/detalhe", method = RequestMethod.POST)
-	public ModelAndView alterarAluno(Aluno aluno, RedirectAttributes redirectAttributes) {
+	public ModelAndView alterarAluno(Aluno aluno, RedirectAttributes redirectAttributes, HttpSession session) {
 		ModelAndView model = new ModelAndView("redirect:/alunos/consulta");
+		
+		String antes = alunoDao.findAluno(aluno.getIdAluno()).toString();
+		Aluno alunoExistente = alunoDao.findAluno(aluno.getIdAluno());
 		boolean result = alunoDao.alterar(aluno);
-		if(result)
+		if(result) {
+			aluno.setStatus(alunoExistente.getStatus());
+			gravaLog(aluno, session, "Alteração", antes, aluno.toString());
 			redirectAttributes.addFlashAttribute("sucesso", "Aluno(a) alterado(a) com sucesso!");
+		}
 		else
 			redirectAttributes.addFlashAttribute("erro", "Aluno(a) não foi alterado(a)!");
 		
 		return model;
 	}
-	
-	/*
-	@RequestMapping("/alunos/adiciona/{id}")
-	public ModelAndView apostilasForm(@PathVariable("id") Integer id) {
-		ModelAndView model = new ModelAndView("alunos/adiciona");
-		Aluno aluno = alunoDao.findAluno(id);
-		List<Apostila> apostilas = apostilaDao.listar();
-		model.addObject("aluno", aluno);
-		model.addObject("apostilas", apostilas);
-		return model;
-	}*/
 	
 	@RequestMapping(value = "/alunos/adiciona", method = RequestMethod.POST)
 	public ModelAndView adicionarApostila(ApostilaXAluno apostilaAluno, Aluno aluno, Apostila apostila, RedirectAttributes redirectAttributes,
@@ -122,9 +115,10 @@ public class AlunoController {
 			apostilaAluno.setApostila(apostila);
 			
 			boolean result = apostilaAlunoDao.gravar(apostilaAluno);
+			aluno.getApostilas().add(apostila);
 			if(result) {
 				apostilaDao.removerApostila(apostila.getIdApostila());
-				DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy-mm:HH:ss");
 				Calendar cal = Calendar.getInstance();
 				Movimento movimento = new Movimento();
 				movimento.setDt(sdf.format(cal.getTime()));
@@ -144,12 +138,16 @@ public class AlunoController {
 	}
 	
 	@RequestMapping(value = "/alunos/ativar{id}")
-	public ModelAndView ativarAluno(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+	public ModelAndView ativarAluno(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes, HttpSession session) {
 		ModelAndView model = new ModelAndView("redirect:/alunos/consulta");
 		Aluno aluno = alunoDao.findAluno(id);
+		String antes = aluno.toString();
 		boolean result = alunoDao.ativar(aluno);
-		if(result)
+		if(result) {
+			aluno.setStatus(Status.Ativo);
+			gravaLog(aluno, session, "Ativação", antes, aluno.toString());
 			redirectAttributes.addFlashAttribute("sucesso", "Aluno(a) ativado(a) com sucesso!");
+		}
 		else
 			redirectAttributes.addFlashAttribute("erro", "Aluno(a) não foi ativado(a)!");
 			
@@ -157,17 +155,36 @@ public class AlunoController {
 	}
 	
 	@RequestMapping(value = "/alunos/remover", method = RequestMethod.POST)
-	public ModelAndView removerAluno(Aluno aluno, RedirectAttributes redirectAttributes) {
+	public ModelAndView removerAluno(@RequestParam String idAluno, RedirectAttributes redirectAttributes, HttpSession session) {
 		ModelAndView model = new ModelAndView("redirect:/alunos/consulta");
-		
+		System.out.println(idAluno);
+		Aluno aluno = alunoDao.findAluno(Integer.parseInt(idAluno.replace(",", "")));
+		String antes = alunoDao.findAluno(aluno.getIdAluno()).toString();
+
 		boolean result = alunoDao.remover(aluno);
-		if(result)
+		if(result) {
+			aluno.setStatus(Status.Inativo);
+			gravaLog(aluno, session, "Desativação", antes, aluno.toString());
 			redirectAttributes.addFlashAttribute("sucesso", "Aluno(a) removido(a) com sucesso!");
+		}	
 		else
 			redirectAttributes.addFlashAttribute("erro", "Aluno(a) não foi removido(a)!");
 			
 		return model;
 		
+	}
+	
+	public void gravaLog(Aluno aluno, HttpSession session, String transacao, String antes, String depois) {
+		DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		LogAluno logAluno = new LogAluno();
+		logAluno.setAluno(aluno);
+		logAluno.setTransacao(transacao);
+		logAluno.setDt(sdf.format(cal.getTime()));
+		logAluno.setUser((Usuario)session.getAttribute("usuarioLogado"));
+		logAluno.setAntes(antes);
+		logAluno.setDepois(depois);
+		logAlunoDao.gravar(logAluno);
 	}
 	
 }

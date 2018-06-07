@@ -57,8 +57,6 @@
 	            <li><a href="/auditapostilas/usuarios/novo"><i class="fa fa-plus-circle"></i> Novo</a></li>
 	          </ul>
         </li>
-        </c:if>
-        <c:if test="${usuarioLogado.permissao == 'Audit'}">
         <li class="treeview">
           <a href="#"><i class="fa fa-arrows"></i> <span>Movimentos</span>
             <span class="pull-right-container">
@@ -67,6 +65,18 @@
           </a>
 	          <ul class="treeview-menu">
 	            <li><a href="/auditapostilas/movimentos/consulta"><i class="fa fa-search"></i> Consultar</a></li>
+	          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#"><i class="fa fa-database"></i> <span>Logs</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+          </a>
+	          <ul class="treeview-menu">
+	            <li><a href="/auditapostilas/logs/alunos"><i class="fa fa-users"></i> Alunos</a></li>
+	            <li><a href="/auditapostilas/logs/apostilas"><i class="fa fa-book"></i> Apostilas</a></li>
+	            <li><a href="/auditapostilas/logs/usuarios"><i class="fa fa-users"></i> Usuários</a></li>
 	          </ul>
         </li>
         </c:if>

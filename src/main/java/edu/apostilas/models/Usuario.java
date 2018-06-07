@@ -52,5 +52,10 @@ public class Usuario {
 	public void setPermissao(Permissao permissao) {
 		this.permissao = permissao;
 	}
+	@Override
+	public String toString() {
+		return this.login + ";" + this.senha + ";" + this.permissao + ";" + this.status;
+	}
+	
 	
 }

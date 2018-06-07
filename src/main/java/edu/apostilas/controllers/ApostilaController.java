@@ -15,8 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.apostilas.dao.ApostilaDAO;
+import edu.apostilas.dao.LogApostilaDAO;
 import edu.apostilas.dao.MovimentoDAO;
 import edu.apostilas.models.Apostila;
+import edu.apostilas.models.LogApostila;
 import edu.apostilas.models.Movimento;
 import edu.apostilas.models.TipoApostila;
 import edu.apostilas.models.TipoMovimento;
@@ -31,6 +33,9 @@ public class ApostilaController {
 	@Autowired
 	private MovimentoDAO movimentoDao;
 	
+	@Autowired
+	private LogApostilaDAO logApostiaDao;
+	
 	@RequestMapping("/apostilas/novo")
 	public ModelAndView novoForm() {
 		ModelAndView model = new ModelAndView("apostilas/novo");
@@ -39,7 +44,7 @@ public class ApostilaController {
 	}
 	
 	@RequestMapping(value = "/apostilas/novo", method = RequestMethod.POST)
-	public ModelAndView gravar(Apostila apostila, RedirectAttributes redirectAttributes) {
+	public ModelAndView gravar(Apostila apostila, RedirectAttributes redirectAttributes, HttpSession session) {
 		ModelAndView model = new ModelAndView("redirect:/apostilas/novo");
 		
 		Apostila apostilaExistente = apostilaDao.findApostila(apostila);
@@ -49,6 +54,7 @@ public class ApostilaController {
 		}
 		
 		apostilaDao.gravar(apostila);
+		gravaLog(apostila, session, "Inserção", "", apostila.toString2());
 		redirectAttributes.addFlashAttribute("sucesso", "Apostila cadastrada com sucesso!");
 		return model;
 	}
@@ -73,11 +79,16 @@ public class ApostilaController {
 	}*/
 	
 	@RequestMapping(value = "/apostilas/detalhe", method = RequestMethod.POST)
-	public ModelAndView alterar(Apostila apostila, RedirectAttributes redirectAttributes) {
+	public ModelAndView alterar(Apostila apostila, RedirectAttributes redirectAttributes, HttpSession session) {
 		ModelAndView model = new ModelAndView("redirect:/apostilas/consulta");
+		
+		String antes = apostilaDao.findApostila(apostila.getIdApostila()).toString2();
+		
 		boolean result = apostilaDao.alterar(apostila);
-		if(result)
+		if(result) {
+			gravaLog(apostila, session, "Alteração", antes, apostila.toString2());
 			redirectAttributes.addFlashAttribute("sucesso", "Apostila alterada com sucesso!");
+		}
 		else
 			redirectAttributes.addFlashAttribute("erro", "Apostila não foi alterada!");
 			
@@ -113,5 +124,18 @@ public class ApostilaController {
 			redirectAttributes.addFlashAttribute("erro", "Apostila não foi adicionada!");
 			
 		return model;
+	}
+	
+	public void gravaLog(Apostila apostila, HttpSession session, String transacao, String antes, String depois) {
+		DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		LogApostila logApostila = new LogApostila();
+		logApostila.setApostila(apostila);
+		logApostila.setTransacao(transacao);
+		logApostila.setDt(sdf.format(cal.getTime()));
+		logApostila.setUser((Usuario)session.getAttribute("usuarioLogado"));
+		logApostila.setAntes(antes);
+		logApostila.setDepois(depois);
+		logApostiaDao.gravar(logApostila);
 	}
 }

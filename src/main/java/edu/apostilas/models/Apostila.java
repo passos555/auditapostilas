@@ -51,4 +51,13 @@ public class Apostila {
 	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
 	}
+	@Override
+	public String toString() {
+		return this.descricao + " - " + this.tipo;
+	}
+	
+	public String toString2() {
+		return this.descricao + ";" + this.paginas + ";" + this.tipo;
+	}
+	
 }

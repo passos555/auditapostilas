@@ -151,8 +151,8 @@ desired effect
 	                  <td align="center">
 	                  	<a class="open-Alt" href="#modal-adiciona" data-aluno-id="${aluno.idAluno }"
 	                  	 data-aluno-nome="${aluno.nome }" data-aluno-cpf="${aluno.cpf }" data-aluno-email="${aluno.email }"
-	                  	 data-aluno-celular="${aluno.celular }" data-aluno-dtnasc="${aluno.dtNasc }" data-aluno-sexo="${aluno.sexo }" data-toggle="modal"
-	                  	 data-target=".modal2">
+	                  	 data-aluno-celular="${aluno.celular }" data-aluno-dtnasc="${aluno.dtNasc }" data-aluno-sexo="${aluno.sexo }" 
+	                  	 data-aluno-apostilas="${aluno.apostilas }" data-toggle="modal" data-target=".modal2">
 	                  	 <i class="fa fa-wrench"></i></a>
 	                  </td>
 	                </tr>
@@ -193,7 +193,7 @@ desired effect
                 </div>
                 
                 <div class="form-group">
-                <label class="col-sm-4 control-label">Aposila*</label>
+                <label class="col-sm-4 control-label">Apostila*</label>
                 <div class="col-sm-5">
                 <select name="idApostila" id="idApostila" class="form-control select2 select2-hidden-accessible " style="width: 100%;" tabindex="-1" aria-hidden="true" required>
                   <c:forEach items="${apostilas }" var="apostila">
@@ -284,10 +284,7 @@ desired effect
               <div class="form-group">
               <label class="col-sm-4 control-label">Apostilas</label>
               <div class="col-sm-5"> 
-                  <select name="apostilas" multiple="" class="form-control" disabled="">
-                  <c:forEach items="${apostilas }" var="apostila">
-                  	<option value="${apostila.idApostila}">${apostila.descricao} - ${apostila.tipo}</option>
-                  </c:forEach>
+                  <select name="apostilas" id="apostilas" multiple="" class="form-control" disabled="">
                   </select>
               </div>
               </div>
@@ -317,7 +314,7 @@ desired effect
          <div class="modal-body">
           <form class="form-horizontal" action="${s:mvcUrl('AC#removerAluno').build() }" method="POST">
               <div class="box-body">
-              	<input type="hidden" value="${aluno.idAluno }" name="idAluno" id="idAluno">
+              	<input type="hidden" value="" name="idAluno" id="idAluno">
                 <div class="form-group">
                   <label for="nome" class="col-sm-2 control-label"></label>
                   <div class="col-sm-8">
@@ -384,7 +381,15 @@ $(document).ready(function () {
 	     var alunoCelular = $(this).data('aluno-celular');
 	     var alunoSexo = $(this).data('aluno-sexo');
 	     var alunoDtNasc = $(this).data('aluno-dtnasc');
-	     console.log($(this).data('aluno-dtnasc'));
+	     var alunoApostilas = $(this).data('aluno-apostilas');
+	     
+	     if(alunoApostilas != ''){
+	    	 var apostilas = alunoApostilas.slice(1, -1).split(",");
+		     for(var i = 0; i < apostilas.length; i++){
+		    	 $(".modal-body #apostilas").append('<option value=' + i + '>' + apostilas[i] + '</option>');
+		     }
+	     }
+	     
 	     $(".modal-body #idAluno").val( alunoId );
 	     $(".modal-body #nome").val( alunoNome );
 	     $(".modal-body #email").val( alunoEmail );
@@ -392,6 +397,8 @@ $(document).ready(function () {
 	     $(".modal-body #cpf").val( alunoCpf );
 	     $(".modal-body #sexo").val( alunoSexo );
 	     $(".modal-body #dtNasc").val( alunoDtNasc );
+	     $(".modal-body #apostilas").val( alunoApostilas );
+	     
 	     // As pointed out in comments, 
 	     // it is superfluous to have to manually call the modal.
 	     // $('#addBookDialog').modal('show');

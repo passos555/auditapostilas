@@ -17,13 +17,16 @@ import edu.apostilas.controllers.HomeController;
 import edu.apostilas.dao.AlunoDAO;
 import edu.apostilas.dao.ApostilaDAO;
 import edu.apostilas.dao.ApostilaXAlunoDAO;
+import edu.apostilas.dao.LogAlunoDAO;
+import edu.apostilas.dao.LogApostilaDAO;
+import edu.apostilas.dao.LogUsuarioDAO;
 import edu.apostilas.dao.MovimentoDAO;
 import edu.apostilas.dao.UsuarioDAO;
 import edu.apostilas.interceptor.AutorizadorInterceptor;
 
 @EnableWebMvc
 @ComponentScan(basePackageClasses= {HomeController.class, UsuarioDAO.class, ApostilaDAO.class, AlunoDAO.class, 
-		ApostilaXAlunoDAO.class, MovimentoDAO.class})
+		ApostilaXAlunoDAO.class, MovimentoDAO.class, LogAlunoDAO.class, LogApostilaDAO.class, LogUsuarioDAO.class})
 public class AppWebConfiguration extends WebMvcConfigurerAdapter {
 	
 	@Bean

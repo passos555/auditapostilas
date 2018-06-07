@@ -1,5 +1,9 @@
 package edu.apostilas.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,6 +20,10 @@ public class Aluno {
 	private String cpf;
 	private String email;
 	private String celular;
+	private String dtNasc;
+	
+	@ElementCollection
+	private List<Apostila> apostilas = new ArrayList<>();
 	
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -23,9 +31,16 @@ public class Aluno {
 	@Enumerated(EnumType.STRING)
 	private Sexo sexo;
 	
-	private String dtNasc;
 	
 	
+	public List<Apostila> getApostilas() {
+		return apostilas;
+	}
+
+	public void setApostilas(List<Apostila> apostilas) {
+		this.apostilas = apostilas;
+	}
+
 	public Status getStatus() {
 		return status;
 	}
@@ -90,5 +105,13 @@ public class Aluno {
 		this.dtNasc = dtNasc;
 	}
 
+	@Override
+	public String toString() {
+		String retorno = this.nome + " ; " + this.cpf + " ; " + this.getDtNasc() + " ; " + this.email + " ; "
+				+ this.celular + " ; " + this.sexo + " ; " + this.status;
+		return retorno;
+	}
+	
+	
 	
 }
