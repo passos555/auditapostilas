@@ -22,7 +22,30 @@
     <!-- Importe do Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition login-page login-bg" style="background: linear-gradient(white, lightblue);">
+<style>
+html, body {
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+}
+
+.bg { 
+    /* The image used */
+    background: linear-gradient(white, lightblue);
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+</style>
+<body class="hold-transition login-page login-bg bg">
 <div class="login-box">
     <div class="login-logo">
         <a href="#">Apostila ADMIN</a>

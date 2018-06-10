@@ -97,9 +97,9 @@ desired effect
                 <thead>
                 <tr>
                   <th>Usuário</th>
-                  <th>Data</th>
-                  <th>Quantidade</th>
-                  <th>Tipo</th>
+                  <th width="10%">Data</th>
+                  <th width="8%">Quantidade</th>
+                  <th width="6%">Tipo</th>
                   <th>Apostila</th>
                   <th>Aluno (Destino)</th>
                 </tr>
@@ -118,7 +118,7 @@ desired effect
 	                   		<td><span class="label label-danger">${movimento.tipo }</span></td>
 	                   </c:otherwise>
 	                  </c:choose>
-	                  <td>${movimento.apostila.descricao }</td>
+	                  <td>${movimento.apostila.descricao } - ${movimento.apostila.tipo }</td>
 	                  <td>${movimento.aluno.nome } - ${movimento.aluno.cpf }</td>
 	                </tr>
                  </c:forEach>

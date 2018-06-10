@@ -21,8 +21,14 @@ public class ApostilaDAO {
 		manager.persist(apostila);
 	}
 	
-	public long countQuantidade() {
-		return (long)manager.createQuery("select sum(a.quantidade) from Apostila a").getSingleResult();
+	public Integer countQuantidade() {
+		
+		Long quantidade = (Long)manager.createQuery("select sum(a.quantidade) from Apostila a").getSingleResult();
+		
+		if(quantidade != null) {
+			return quantidade.intValue();
+		} 
+		return 0;
 	}
 	
 	public Apostila findApostila(Apostila novaApostila) {

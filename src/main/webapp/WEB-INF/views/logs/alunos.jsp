@@ -64,6 +64,7 @@ desired effect
  input{
  	border-width:0px;
  	border:none;
+ 	width:100%;
  }
 </style>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -259,22 +260,24 @@ $(document).ready(function () {
 	$(document).on("click", ".open-Info", function () {
 	     var logId = $(this).data('log-id');
 	     if($(this).data('log-id') != ''){
-	    	 var antes = $(this).data('log-antes').split(';');
+	    	 var antes = $(this).data('log-antes');
+	    	 var depois = $(this).data('log-depois').split(';');
+	    	 console.log(antes);
+	    	 if(antes != ''){
+	    		 antes = $(this).data('log-antes').split(';');
+	    		 for(i = 0; i < antes.length; i++){
+	    	    	 $(".modal-body #antes"+i+"").val( antes[i] );
+	    	     }
+	    	 } else {
+	    		 for(i = 0; i < depois.length; i++){
+	    	    	 $(".modal-body #antes"+i+"").val( '' );
+	    	     }
+	    	 }
 	     }
-	    
-	     var depois = $(this).data('log-depois').split(';');
-	     
-	     for(i = 0; i < antes.length; i++){
-	    	 $(".modal-body #antes"+i+"").val( antes[i] );
-	     }
+
 	     for(i = 0; i < depois.length; i++){
 	    	 $(".modal-body #depois"+i+"").val( depois[i] );
 	     }
-		 console.log(antes);
-		 console.log(depois);
-	     // As pointed out in comments, 
-	     // it is superfluous to have to manually call the modal.
-	     // $('#addBookDialog').modal('show');
 	});
 });
 </script>

@@ -73,8 +73,26 @@ public class AlunoDAO {
 				.setParameter("id", id).getSingleResult();
 	}
 	
+	public long countNovosAlunos(String mes) {
+		return (long)manager.createQuery("select count(a) from Aluno a where a.dtCadastro like :mes")
+				.setParameter("mes",  "%" + mes + "%")
+				.getSingleResult();
+	}
+	
 	public long countAlunos() {
 		return (long)manager.createQuery("select count(a.idAluno) from Aluno a").getSingleResult();
+	}
+	
+	public long countAlunosInativos() {
+		return (long)manager.createQuery("select count(a) from Aluno a where a.status = :status")
+				.setParameter("status", Status.Inativo)
+				.getSingleResult();
+	}
+	
+	public long countAlunosAtivos() {
+		return (long)manager.createQuery("select count(a) from Aluno a where a.status = :status")
+				.setParameter("status", Status.Ativo)
+				.getSingleResult();
 	}
 	
 	public boolean ativar(Aluno aluno) {

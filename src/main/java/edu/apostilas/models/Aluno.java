@@ -21,6 +21,7 @@ public class Aluno {
 	private String email;
 	private String celular;
 	private String dtNasc;
+	private String dtCadastro;
 	
 	@ElementCollection
 	private List<Apostila> apostilas = new ArrayList<>();
@@ -33,6 +34,14 @@ public class Aluno {
 	
 	
 	
+	public String getDtCadastro() {
+		return dtCadastro;
+	}
+
+	public void setDtCadastro(String dtCadastro) {
+		this.dtCadastro = dtCadastro;
+	}
+
 	public List<Apostila> getApostilas() {
 		return apostilas;
 	}

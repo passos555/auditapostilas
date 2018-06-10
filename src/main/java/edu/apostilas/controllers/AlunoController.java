@@ -59,12 +59,14 @@ public class AlunoController {
 	@RequestMapping(value = "/alunos/novo", method = RequestMethod.POST)
 	public ModelAndView gravarAluno(Aluno aluno, RedirectAttributes redirectAttributes, HttpSession session) {
 		ModelAndView model = new ModelAndView("redirect:/alunos/novo");
-		
+		DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Calendar cal = Calendar.getInstance();
 		Aluno alunoExistente = alunoDao.findAluno(aluno.getCpf());
 		if(alunoExistente != null) {
 			redirectAttributes.addFlashAttribute("erro", "Este(a) aluno(a) já foi cadastrado(a)!");
 			return model;
 		}
+		aluno.setDtCadastro(sdf.format(cal.getTime()));
 		aluno.setStatus(Status.Ativo);
 		alunoDao.gravar(aluno);
 		gravaLog(aluno, session, "Inserção", "", aluno.toString());

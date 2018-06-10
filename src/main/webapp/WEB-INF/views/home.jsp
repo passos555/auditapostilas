@@ -19,6 +19,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="resources/bower_components/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="resources/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="resources/bower_components/morris.js/morris.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="resources/dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -78,7 +79,11 @@ desired effect
       </ol>
     </section>
     
- 	<section class="content">
+ 	<section class="content" style="min-height:0px;">
+ 	<input type="hidden" id="entradas" value="${entradas }">
+ 	<input type="hidden" id="saidas" value="${saidas }">
+ 	<input type="hidden" id="alunosAtivos" value="${alunosAtivos }">
+ 	<input type="hidden" id="alunosInativos" value="${alunosInativos }">
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-lg-3 col-xs-6">
@@ -91,7 +96,7 @@ desired effect
             <div class="icon">
               <i class="ion ion-arrow-move"></i>
             </div>
-            <a href="/auditapostilas/movimentos/consulta" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="/auditapostilas/movimentos/consulta" class="small-box-footer">Mais informações <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -101,12 +106,12 @@ desired effect
             <div class="inner">
               <h3>${apostilas }</h3>
 
-              <p>Apostilas no estoque</p>
+              <p>Apostila(s) no estoque</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="/auditapostilas/apostilas/consulta" class="small-box-footer">More info<i class="fa fa-arrow-circle-right"></i></a>
+            <a href="/auditapostilas/apostilas/consulta" class="small-box-footer">Mais informações <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -115,7 +120,7 @@ desired effect
           <div class="small-box bg-yellow">
             <div class="inner">
               <h3>${alunos }</h3>
-              <p>Alunos</p>
+              <p>Aluno(s)</p>
             </div>
             <div class="icon">
               <i class="ion ion-person"></i>
@@ -128,13 +133,13 @@ desired effect
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>1</h3>
-              <p>Gráfico</p>
+              <h3>2</h3>
+              <p>Gráficos</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#graficos" class="open-Graficos small-box-footer">Mostrar <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="#graficos" class="open-Graficos small-box-footer">Mostrar <i class="fa fa-arrow-circle-down"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -148,13 +153,14 @@ desired effect
        <div class="col-md-6">
        <div class="box box-danger">
             <div class="box-header with-border">
-              <h3 class="box-title">Tipos de Apostila</h3>
+            <i class="fa fa-bar-chart-o"></i>
+              <h3 class="box-title">Tipos de Movimento</h3>
             </div>
-            <div class="box-body">
-              
+            <div class="box-body chart-responsive">
+              <div class="chart" id="apostilas-chart" style="height: 300px; position: relative;"><svg height="300" version="1.1" width="756" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative;"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.2.0</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><path fill="none" stroke="#3c8dbc" d="M377.75,243.33333333333331A93.33333333333333,93.33333333333333,0,0,0,465.9777551949771,180.44625304313007" stroke-width="2" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;"></path><path fill="#3c8dbc" stroke="#ffffff" d="M377.75,246.33333333333331A96.33333333333333,96.33333333333333,0,0,0,468.81364732624417,181.4248826052307L510.0916327924656,195.6693795646951A140,140,0,0,1,377.75,290Z" stroke-width="3" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="none" stroke="#f56954" d="M465.9777551949771,180.44625304313007A93.33333333333333,93.33333333333333,0,0,0,294.03484627831415,108.73398312817662" stroke-width="2" opacity="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 0;"></path><path fill="#f56954" stroke="#ffffff" d="M468.81364732624417,181.4248826052307A96.33333333333333,96.33333333333333,0,0,0,291.34400205154566,107.40757544301087L256.6620097954186,90.31165416754118A135,135,0,0,1,505.3651459070204,194.03833029452744Z" stroke-width="3" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="none" stroke="#00a65a" d="M294.03484627831415,108.73398312817662A93.33333333333333,93.33333333333333,0,0,0,377.72067846904883,243.333328727518" stroke-width="2" opacity="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 0;"></path><path fill="#00a65a" stroke="#ffffff" d="M291.34400205154566,107.40757544301087A96.33333333333333,96.33333333333333,0,0,0,377.71973599126824,246.3333285794739L377.7075884998742,284.9999933380171A135,135,0,0,1,256.6620097954186,90.31165416754118Z" stroke-width="3" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="377.75" y="140" text-anchor="middle" font-family="&quot;Arial&quot;" font-size="15px" stroke="none" fill="#000000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: Arial; font-size: 15px; font-weight: 800;" font-weight="800" transform="matrix(1.2867,0,0,1.2867,-108.3116,-43.2978)" stroke-width="0.7771577380952381"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="6">Download Sales</tspan></text><text x="377.75" y="160" text-anchor="middle" font-family="&quot;Arial&quot;" font-size="14px" stroke="none" fill="#000000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: Arial; font-size: 14px;" transform="matrix(1.9444,0,0,1.9444,-356.8524,-143.5556)" stroke-width="0.5142857142857143"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="5">12</tspan></text></svg></div>
             </div>
             <!-- /.box-body -->
-      </div>
+          </div>
       </div>
       <div class="col-md-6">
        <!-- Donut chart -->
@@ -162,41 +168,86 @@ desired effect
             <div class="box-header with-border">
               <i class="fa fa-bar-chart-o"></i>
 
-              <h3 class="box-title">Donut Chart</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
+              <h3 class="box-title">Alunos</h3>
             </div>
             <div class="box-body">
-              <div id="donut-chart" style="height: 300px;"></div>
+              <div class="chart" id="alunos-chart" style="height: 300px; position: relative;"><svg height="300" version="1.1" width="756" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative;"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.2.0</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><path fill="none" stroke="#3c8dbc" d="M377.75,243.33333333333331A93.33333333333333,93.33333333333333,0,0,0,465.9777551949771,180.44625304313007" stroke-width="2" opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;"></path><path fill="#3c8dbc" stroke="#ffffff" d="M377.75,246.33333333333331A96.33333333333333,96.33333333333333,0,0,0,468.81364732624417,181.4248826052307L510.0916327924656,195.6693795646951A140,140,0,0,1,377.75,290Z" stroke-width="3" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="none" stroke="#f56954" d="M465.9777551949771,180.44625304313007A93.33333333333333,93.33333333333333,0,0,0,294.03484627831415,108.73398312817662" stroke-width="2" opacity="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 0;"></path><path fill="#f56954" stroke="#ffffff" d="M468.81364732624417,181.4248826052307A96.33333333333333,96.33333333333333,0,0,0,291.34400205154566,107.40757544301087L256.6620097954186,90.31165416754118A135,135,0,0,1,505.3651459070204,194.03833029452744Z" stroke-width="3" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="none" stroke="#00a65a" d="M294.03484627831415,108.73398312817662A93.33333333333333,93.33333333333333,0,0,0,377.72067846904883,243.333328727518" stroke-width="2" opacity="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 0;"></path><path fill="#00a65a" stroke="#ffffff" d="M291.34400205154566,107.40757544301087A96.33333333333333,96.33333333333333,0,0,0,377.71973599126824,246.3333285794739L377.7075884998742,284.9999933380171A135,135,0,0,1,256.6620097954186,90.31165416754118Z" stroke-width="3" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="377.75" y="140" text-anchor="middle" font-family="&quot;Arial&quot;" font-size="15px" stroke="none" fill="#000000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: Arial; font-size: 15px; font-weight: 800;" font-weight="800" transform="matrix(1.2867,0,0,1.2867,-108.3116,-43.2978)" stroke-width="0.7771577380952381"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="6">Download Sales</tspan></text><text x="377.75" y="160" text-anchor="middle" font-family="&quot;Arial&quot;" font-size="14px" stroke="none" fill="#000000" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: Arial; font-size: 14px;" transform="matrix(1.9444,0,0,1.9444,-356.8524,-143.5556)" stroke-width="0.5142857142857143"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="5">12</tspan></text></svg></div>
             </div>
             <!-- /.box-body-->
           </div>
           <!-- /.box -->
         </div>
         <!-- /.col -->
-      </div>
-      </div>
-      </div>
+        </div>
       <!-- /.row -->
     </section>
     
+  	<section class="content">
+  		<div class="row">
+        <div class="col-md-12">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Objetivos Mensais</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="row">
+                <!-- /.col -->
+                <div class="col-md-12">
+                  <p class="text-center">
+                    <strong>Progresso</strong>
+                  </p>
+                  <div class="progress-group">
+                    <span class="progress-text">Novos Aluno</span>
+                    <c:choose>
+                    <c:when test="${novosAlunos <= 0 }">
+                    <span class="progress-number"><b>0</b>/5</span>
+                    <div class="progress sm">
+                      <div class=""></div>
+                    </div>
+                    </c:when>
+                    <c:when test="${novosAlunos <= 5 }">
+                    <span class="progress-number"><b>${novosAlunos}</b>/5</span>
+                    <div class="progress sm">
+                      <div class="progress-bar progress-bar-aqua" style="width:${porcentagem}%;"></div>
+                    </div>
+                    </c:when>
+                    <c:when test="${novosAlunos > 5 }">
+                    <span class="progress-number"><b>${novosAlunos}</b>/5</span>
+                    <div class="progress sm">
+                      <div class="progress-bar progress-bar-green" style="width:100%;"></div>
+                    </div>
+                    </c:when>
+                    </c:choose>
+                  </div>
+                  <!-- /.progress-group -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- ./box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+  	</section> 
+  
   </div>
-  
-  
-  
   <!-- Rodapé -->
   <c:import url="comum/rodape.jsp" />
 
-</div>
+
 <!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
+<script async="" src="//www.google-analytics.com/analytics.js"></script>
 <script src="${contextPath}resources/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="${contextPath}resources/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="${contextPath}resources/bower_components/raphael/raphael.min.js"></script>
+<script src="${contextPath}resources/bower_components/morris.js/morris.min.js"></script>
 
 <!-- SlimScroll -->
 <script src="${contextPath}resources/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
@@ -206,60 +257,38 @@ desired effect
 <script src="${contextPath}resources/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="${contextPath}resources/dist/js/demo.js"></script>
-<script src="${contextPath}resources/bower_components/Flot/jquery.flot.js"></script>
-<script src="${contextPath}resources/bower_components/Flot/jquery.flot.resize.js"></script>
-<script src=".${contextPath}resources/bower_components/Flot/jquery.flot.pie.js"></script>
-<script src="${contextPath}resources/bower_components/Flot/jquery.flot.categories.js"></script>
 <script>
   $(function () {
-    /*
-     * DONUT CHART
-     * -----------
-     */
-
-    var donutData = [
-      { label: 'Series2', data: 30, color: '#3c8dbc' },
-      { label: 'Series3', data: 20, color: '#0073b7' },
-      { label: 'Series4', data: 50, color: '#00c0ef' }
-    ]
-    $.plot('#donut-chart', donutData, {
-      series: {
-        pie: {
-          show       : true,
-          radius     : 1,
-          innerRadius: 0.5,
-          label      : {
-            show     : true,
-            radius   : 2 / 3,
-            formatter: labelFormatter,
-            threshold: 0.1
-          }
-
-        }
-      },
-      legend: {
-        show: false
-      }
-    })
-    /*
-     * END DONUT CHART
-     */
-
-  })
-
-  /*
-   * Custom Label formatter
-   * ----------------------
-   */
-  function labelFormatter(label, series) {
-    return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
-      + label
-      + '<br>'
-      + Math.round(series.percent) + '%</div>'
-  }
+	
+  $(document).on("click", ".open-Graficos", function () {
+	     $("#graficos").toggle();
+	});
+	  
+   "use strict";
+   //DONUT CHART
+   var donut = new Morris.Donut({
+     element: 'apostilas-chart',
+     resize: true,
+     colors: ["#3c8dbc", "#f56954"],
+     data: [
+       {label: "Entradas", value: $('#entradas').val()},
+       {label: "Saídas", value: $('#saidas').val()},
+     ],
+     hideHover: 'auto'
+   });
+   
+   var donut = new Morris.Donut({
+	     element: 'alunos-chart',
+	     resize: true,
+	     colors: ["#009551", "#c64333"],
+	     data: [
+	       {label: "Ativos", value: $('#alunosAtivos').val()},
+	       {label: "Inativos", value: $('#alunosInativos').val()},
+	     ],
+	     hideHover: 'auto'
+	   });
+  });
 </script>
-<script>
 
-</script>
 </body>
 </html>
