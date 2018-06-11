@@ -46,7 +46,17 @@
             <li><a href="/auditapostilas/apostilas/novo"><i class="fa fa-plus-circle"></i> Novo</a></li>
           </ul>
         </li>
-        <c:if test="${usuarioLogado.permissao == 'Audit'}">
+        <li class="treeview">
+          <a href="#"><i class="fa fa-arrows"></i> <span>Movimentos</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+          </a>
+	          <ul class="treeview-menu">
+	            <li><a href="/auditapostilas/movimentos/consulta"><i class="fa fa-search"></i> Consultar</a></li>
+	          </ul>
+        </li>
+        <c:if test="${usuarioLogado.permissao == 'Auditor' || usuarioLogado.permissao == 'Admim'}">
         <li class="treeview">
           <a href="#"><i class="fa fa-group"></i> <span>Usuários</span>
             <span class="pull-right-container">
@@ -56,16 +66,6 @@
 	          <ul class="treeview-menu">
 	            <li><a href="/auditapostilas/usuarios/consulta"><i class="fa fa-search"></i> Consultar</a></li>
 	            <li><a href="/auditapostilas/usuarios/novo"><i class="fa fa-plus-circle"></i> Novo</a></li>
-	          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-arrows"></i> <span>Movimentos</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-          </a>
-	          <ul class="treeview-menu">
-	            <li><a href="/auditapostilas/movimentos/consulta"><i class="fa fa-search"></i> Consultar</a></li>
 	          </ul>
         </li>
         <li class="treeview">

@@ -139,7 +139,7 @@ desired effect
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#graficos" class="open-Graficos small-box-footer">Mostrar <i class="fa fa-arrow-circle-down"></i></a>
+            <a href="#" class="open-Graficos small-box-footer"> <i class="fa fa-arrow-circle-down"></i></a>
           </div>
         </div>
         <!-- ./col -->
