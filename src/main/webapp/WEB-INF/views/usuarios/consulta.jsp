@@ -227,7 +227,7 @@ desired effect
                 </div>
               </div>
               <div align="center" class="box-footer" style="background-color:#d33724;border-top:0px;">
-                <button type="submit" class="btn btn-outline btn-md">Remover</button>
+                <button type="submit" class="btn btn-outline btn-md">Desativar</button>
               </div>  
             </form>
        </div>

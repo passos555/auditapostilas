@@ -113,10 +113,12 @@ desired effect
                   <th>Email</th>
                   <th>Celular</th>
                   <th>Sexo</th>
+                  <c:if test="${usuarioLogado.permissao != 'Auditor' }">
                   <th>Status</th>
  				  <th width="8%">Alterar Status</th>
                   <th width="5%">Adicionar</th>
                   <th width="5%">Alterar</th>
+                  </c:if>
                 </tr>
                 </thead>
                 <tbody>
@@ -128,6 +130,7 @@ desired effect
 	                  <td>${aluno.email }</td>
 	                  <td>${aluno.celular }</td>
 	                  <td>${aluno.sexo }</td>
+	                  <c:if test="${usuarioLogado.permissao != 'Auditor' }">
 	                  <c:choose>
 	                   <c:when test="${aluno.status == 'Ativo'}">
 	                   		<td><span class="label label-success">${aluno.status }</span></td>
@@ -155,6 +158,7 @@ desired effect
 	                  	 data-aluno-apostilas="${aluno.apostilas }" data-toggle="modal" data-target=".modal2">
 	                  	 <i class="fa fa-wrench"></i></a>
 	                  </td>
+	                  </c:if>
 	                </tr>
                  </c:forEach>
                 </tbody>
@@ -323,7 +327,7 @@ desired effect
                 </div>
               </div>
               <div align="center" class="box-footer" style="background-color:#d33724;border-top:0px;">
-                <button type="submit" class="btn btn-outline btn-md">Remover</button>
+                <button type="submit" class="btn btn-outline btn-md">Desativar</button>
               </div>  
             </form>
        </div>

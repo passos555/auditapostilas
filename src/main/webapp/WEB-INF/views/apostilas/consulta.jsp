@@ -110,8 +110,10 @@ desired effect
                   <th>Tipo</th>
                   <th>Páginas</th>
                   <th>Quantidade</th>
+                  <c:if test="${usuarioLogado.permissao != 'Auditor' }">
                   <th width="5%">Adicionar</th>
                   <th width="5%">Alterar</th>
+                  </c:if>
                 </tr>
                 </thead>
                 <tbody>
@@ -121,6 +123,7 @@ desired effect
 	                  <td>${apostila.tipo }</td>
 	                  <td>${apostila.paginas }</td>
 	                  <td>${apostila.quantidade }</td>
+	                  <c:if test="${usuarioLogado.permissao != 'Auditor' }">
 	                  <td align="center">
 	                  	<a class="open-AddQtd" href="#modal-adiciona" data-apostila-id="${apostila.idApostila }"
 	                  	 data-apostila-tipo="${apostila.tipo }" data-apostila-descricao="${apostila.descricao }" data-toggle="modal"
@@ -133,6 +136,7 @@ desired effect
 	                  	 data-apostila-paginas="${apostila.paginas }" data-toggle="modal"
 	                  	 data-target=".modal2"><i class="fa fa-wrench"></i></a>
 	                  </td>
+	                  </c:if>
 	                </tr>
                  </c:forEach>
                 </tbody>
